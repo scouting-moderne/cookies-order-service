@@ -52,7 +52,7 @@ class OrderControllerTest {
         OrderController.OrderRequest request = new OrderController.OrderRequest("unknown", cookies);
         ResponseEntity<ApiError> response = testRestTemplate.postForEntity("/orders", request, ApiError.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-        assertThat(response.getBody()).isEqualTo(new ApiError("User not found", "The user does not exist."));
+        assertThat(response.getBody()).isEqualTo(new ApiError("User", "The user does not exist."));
     }
 
     @Test
@@ -61,7 +61,7 @@ class OrderControllerTest {
         OrderController.OrderRequest request = new OrderController.OrderRequest("abc123", cookies);
         ResponseEntity<ApiError> response = testRestTemplate.postForEntity("/orders", request, ApiError.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-        assertThat(response.getBody()).isEqualTo(new ApiError("Empty order", "The order cannot be empty."));
+        assertThat(response.getBody()).isEqualTo(new ApiError("Order", "The order cannot be empty."));
     }
 
 }
