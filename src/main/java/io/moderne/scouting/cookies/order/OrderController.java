@@ -7,10 +7,7 @@ import io.moderne.scouting.cookies.order.user.UserClient;
 import io.moderne.scouting.cookies.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -27,6 +24,11 @@ class OrderController {
         User user = userClient.findUser(order.userId())
                 .orElseThrow(() -> new ApiException(new ApiError("User", "The user does not exist.")));
         return orderService.createOrder(user, order.reservationId());
+    }
+
+    @GetMapping
+    public Order getOrder(@RequestParam String id) {
+        return orderService.findOrder(id);
     }
 
     record OrderRequest(String userId, String reservationId) {

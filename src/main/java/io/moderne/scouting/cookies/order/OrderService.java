@@ -28,4 +28,8 @@ public class OrderService {
         db.put(order.getId(), order);
         return order;
     }
+
+    public Order findOrder(String id) {
+        return db.get(id);
+    }
 }
