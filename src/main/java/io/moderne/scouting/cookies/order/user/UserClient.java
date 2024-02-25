@@ -4,17 +4,19 @@ import io.moderne.scouting.cookies.user.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(value = "user", url = "http://cookies-user-service:8080")
+import java.util.Optional;
+
+@FeignClient(value = "user", url = "${service.user.url:http://cookies-user-service:8080}", dismiss404 = true)
 public interface UserClient {
-    @PostMapping
+    @PostMapping("/users")
     User createUser(@RequestBody User user);
 
-    @GetMapping("/{id}")
-    User findUser(@PathVariable String id);
+    @GetMapping("/users/{id}")
+    Optional<User> findUser(@PathVariable String id);
 
-    @PutMapping("/{id}")
+    @PutMapping("/users/{id}")
     User updateUser(@PathVariable String id, @RequestBody User user);
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable String id);
 }
