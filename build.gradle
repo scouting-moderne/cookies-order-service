@@ -7,10 +7,6 @@ plugins {
 group = 'io.moderne.scouting.cookies'
 version = '0.0.1-SNAPSHOT'
 
-ext {
-    set('springCloudVersion', "2023.0.0")
-}
-
 java {
     sourceCompatibility = '17'
 }
@@ -39,7 +35,7 @@ repositories {
 }
 
 dependencies {
-    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"))
+    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2023.0.0"))
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'io.moderne.scouting.cookies:cookies-core:latest.integration'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
