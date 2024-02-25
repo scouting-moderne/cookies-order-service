@@ -1,6 +1,5 @@
 package io.moderne.scouting.cookies.order;
 
-import io.moderne.scouting.cookies.CookieCalculator;
 import io.moderne.scouting.cookies.CookieType;
 import io.moderne.scouting.cookies.user.User;
 import lombok.Value;
@@ -19,12 +18,12 @@ public class Order {
     Instant payedAt;
     Instant deliveredAt;
 
-    public Order(User user, Map<CookieType, Integer> cookies) {
+    public Order(User user, Map<CookieType, Integer> cookies, BigDecimal price) {
         id = java.util.UUID.randomUUID().toString();
         this.user = user;
         this.cookies = cookies;
         this.createdAt = Instant.now();
-        this.price = CookieCalculator.calculatePrice(cookies);
+        this.price = price;
         this.payedAt = null;
         this.deliveredAt = null;
     }

@@ -29,15 +29,19 @@ class OrderControllerTest {
     @Autowired
     private WireMockServer mockUserService;
 
+    @Autowired
+    private WireMockServer mockInventoryService;
+
     @BeforeEach
     void setUp() {
         UserMocks.setupUserMocks(mockUserService);
+        InventoryMocks.setupUserMocks(mockInventoryService);
     }
 
     @Test
     void createOrder() {
         Map<CookieType, Integer> cookies = Map.of(CookieType.STROOPWAFEL, 1, CookieType.KANO, 2);
-        OrderController.OrderRequest request = new OrderController.OrderRequest("abc123", cookies);
+        OrderController.OrderRequest request = new OrderController.OrderRequest("abc123", "12345");
         ResponseEntity<Order> response = testRestTemplate.postForEntity("/orders", request, Order.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -49,19 +53,18 @@ class OrderControllerTest {
     @Test
     void createOrderWithUnknownUserThrowsApiError() {
         Map<CookieType, Integer> cookies = Map.of(CookieType.STROOPWAFEL, 1, CookieType.KANO, 2);
-        OrderController.OrderRequest request = new OrderController.OrderRequest("unknown", cookies);
+        OrderController.OrderRequest request = new OrderController.OrderRequest("unknown", "12345");
         ResponseEntity<ApiError> response = testRestTemplate.postForEntity("/orders", request, ApiError.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
         assertThat(response.getBody()).isEqualTo(new ApiError("User", "The user does not exist."));
     }
 
     @Test
-    void createOrderWithEmptyOrderThrowsApiError() {
-        Map<CookieType, Integer> cookies = Map.of();
-        OrderController.OrderRequest request = new OrderController.OrderRequest("abc123", cookies);
+    void createOrderWithUnknownReservationThrowsApiError() {
+        OrderController.OrderRequest request = new OrderController.OrderRequest("abc123", "unknown");
         ResponseEntity<ApiError> response = testRestTemplate.postForEntity("/orders", request, ApiError.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-        assertThat(response.getBody()).isEqualTo(new ApiError("Order", "The order cannot be empty."));
+        assertThat(response.getBody()).isEqualTo(new ApiError("Order", "The reservation does not exist."));
     }
 
 }

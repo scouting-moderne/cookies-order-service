@@ -29,9 +29,9 @@ class OrderController {
     public Order createOrder(@RequestBody OrderRequest order) {
         User user = userClient.findUser(order.userId())
                 .orElseThrow(() -> new ApiException(new ApiError("User", "The user does not exist.")));
-        return orderService.createOrder(user, order.cookies());
+        return orderService.createOrder(user, order.reservationId());
     }
 
-    record OrderRequest(String userId, Map<CookieType, Integer> cookies) {
+    record OrderRequest(String userId, String reservationId) {
     }
 }

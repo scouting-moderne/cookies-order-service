@@ -12,4 +12,9 @@ public class WireMockConfig {
     public WireMockServer mockUserService() {
         return new WireMockServer(12345);
     }
+
+    @Bean(initMethod = "start", destroyMethod = "stop")
+    public WireMockServer mockInventoryService() {
+        return new WireMockServer(12346);
+    }
 }
