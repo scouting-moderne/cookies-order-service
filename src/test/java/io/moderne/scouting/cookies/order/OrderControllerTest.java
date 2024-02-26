@@ -56,7 +56,7 @@ class OrderControllerTest {
         OrderController.OrderRequest request = new OrderController.OrderRequest("unknown", "12345");
         ResponseEntity<ApiError> response = testRestTemplate.postForEntity("/orders", request, ApiError.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-        assertThat(response.getBody()).isEqualTo(new ApiError("User", "The user does not exist."));
+        assertThat(response.getBody()).isEqualTo(new ApiError("User", "The user does not exist.", null));
     }
 
     @Test
@@ -64,7 +64,7 @@ class OrderControllerTest {
         OrderController.OrderRequest request = new OrderController.OrderRequest("abc123", "unknown");
         ResponseEntity<ApiError> response = testRestTemplate.postForEntity("/orders", request, ApiError.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-        assertThat(response.getBody()).isEqualTo(new ApiError("Order", "The reservation does not exist."));
+        assertThat(response.getBody()).isEqualTo(new ApiError("Order", "The reservation does not exist.", null));
     }
 
 }
