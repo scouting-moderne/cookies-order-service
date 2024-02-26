@@ -20,9 +20,9 @@ public class OrderService {
 
     public Order createOrder(User user, String reservationId) {
         Reservation reservation = inventoryClient.verified(new InventoryClient.ReservationVerifyRequest(user.id(), reservationId))
-                .orElseThrow(() -> new ApiException(new ApiError("Order", "The reservation does not exist.")));
+                .orElseThrow(() -> new ApiException(new ApiError("Order", "The reservation does not exist.", null)));
         if (reservation.getCookies().isEmpty()) {
-            throw new ApiException(new ApiError("Order", "The order cannot be empty."));
+            throw new ApiException(new ApiError("Order", "The order cannot be empty.", null));
         }
         Order order = new Order(user, reservation.getCookies(), reservation.getPrice());
         db.put(order.getId(), order);
