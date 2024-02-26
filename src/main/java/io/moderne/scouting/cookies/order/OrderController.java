@@ -22,7 +22,7 @@ class OrderController {
     @PostMapping
     public Order createOrder(@RequestBody OrderRequest order) {
         User user = userClient.findUser(order.userId())
-                .orElseThrow(() -> new ApiException(new ApiError("User", "The user does not exist.")));
+                .orElseThrow(() -> new ApiException(new ApiError("User", "The user does not exist.", null)));
         return orderService.createOrder(user, order.reservationId());
     }
 
